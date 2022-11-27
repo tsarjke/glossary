@@ -7,7 +7,7 @@ const TermCard = ({term: {term, description, date}}) => {
         <>
             <h2>{capitalizeFirstLetter(term)}</h2>
             <p className="flow-text"><span style={{textDecoration: 'underline'}}>Определение:</span><strong> {capitalizeFirstLetter(description)}{endingDot(description)}</strong></p>
-            <p>Date of creation: <strong>{new Date(date).toLocaleDateString()}</strong></p>
+            <p>Дата создания: <strong>{new Date(date).toLocaleDateString()}</strong></p>
         </>
     );
 };
