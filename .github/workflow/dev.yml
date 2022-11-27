@@ -1,0 +1,39 @@
+name: Test new branch or changes
+
+on:
+  push:
+
+jobs:
+  # джоба для установки всего необходимого
+  installation:
+    runs-on: ubuntu-20.04
+    steps:
+      # Чекаутим код
+      - uses: actions/checkout@v2
+      - name: Install Nodejs and NPM
+        run: |
+          curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+          sudo apt install nodejs
+          echo nodejs version
+          node -v
+          echo npm version
+          npm -v
+      - name: Install dependencies for the server and client side
+        run: npm i && npm run client:install
+
+  run_tests:
+    # джоба для прогона тестов, выполнится после установки всего необходимого
+    needs: [installation]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: run all tests
+        run: npm run test && npm run client:test
+
+  client_build:
+    # джоба для сборки build'а клиента, выполнится после тестов
+    needs: [run_tests]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: build the client side
+        run: npm run client:build
+
